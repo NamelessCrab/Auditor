@@ -17,6 +17,8 @@ for line in apt_result.stdout.splitlines()[1:]:
         version = version.split(' ')[0]
         package_dict['version'].append(version)
 
+
+
 print(package_dict)
     
         
