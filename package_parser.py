@@ -6,15 +6,5 @@ apt_result = subprocess.run(
     text=True
     )
 
-apt_lines = apt_result.stdout.splitlines()
-p_ids = []
-for line in apt_lines:
-    id = line.index('python3')
-    p_ids.append[apt_lines[id]]
-        
-print(p_ids)
-
-'''
-for line in result.stdout.splitlines():
+for line in apt_result.stdout.splitlines():
     print(line)
-'''
