@@ -8,6 +8,7 @@ apt_result = subprocess.run(
 
 for line in apt_result.stdout.splitlines()[1:]:
     if '/' in line and 'python3' in line:
-        line = line.split('/')[0]
-        print(line)
+        name = line.split('/')[0]
+        version = line.split('/')[1]
+        print(name, version)
     
