@@ -2,7 +2,7 @@ import subprocess
 
 apt_result = subprocess.run(
     ['apt', 'list', '--installed'],
-    stdout=PIPE,
+    stdout=subprocess.PIPE,
     text=True
     )
 
