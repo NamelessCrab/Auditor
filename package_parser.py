@@ -6,5 +6,7 @@ apt_result = subprocess.run(
     text=True
     )
 
-for line in apt_result.stdout.splitlines():
+for line in apt_result.stdout.splitlines()[1:]:
+    if '/' in line:
+        line = line.split('/')[0]
     print(line)
