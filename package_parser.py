@@ -5,12 +5,19 @@ apt_result = subprocess.run(
     stdout=subprocess.PIPE,
     text=True
     )
-
+package_dict = {
+    'name': [],
+    'version': []
+}
 for line in apt_result.stdout.splitlines()[1:]:
-    if '/' in line and 'python3' in line:
-        name = line.split('/')[0]
+    if '/' in line:
+        package_dict['name'].append(line.split('/')[0])
         version = line.split('/')[1]
         version = version.split(' ')[1]
         version = version.split(' ')[0]
-        print(name, version)
+        package_dict['version'].append(version)
+
+print(package_dict)
     
+        
+
