@@ -1,5 +1,9 @@
-import pandas as pd
 import time
+import re
+
+import pandas as pd
+
+
 
 clock = time.time()
 
@@ -28,11 +32,30 @@ astra = astra[
     ]
 ]
 
-# mask = astra["Название ПО"].str.contains(", ")
-# mask_result = astra[mask]
-# astra_split = astra.assign(names_split=astra["Название ПО"].str.split(", "))
-# astra = astra["Название ПО"] = astra_split["names_split"]
-astra.to_excel("./data/ready.xlsx", sheet_name="Уязвимости", index=False)
+py_test = astra['Версия ПО'].iloc[129]
+
+reform = []
+for line in py_test.split(', '):
+    version, name = line.split("(")
+    version = re.sub(r'[^0-9.]', '',version)
+    name = name.rstrip(')')
+    print(name, version)
+
+
+
+#astra.to_excel("./data/ready.xlsx", sheet_name="Уязвимости", index=True)
 
 clock = time.time() - clock
 print(f"Работа с базой заняла {clock:.2f} секунд")
+
+
+def make_lists(df):
+    mask = df["Название ПО"].str.contains(", ")
+    mask_result = df[mask]
+    df_split = df.assign(names_split=df["Название ПО"].str.split(", "))
+    df = df["Название ПО"] = df_split["names_split"]
+
+def save_txt(text, name):
+    with open(name, "w", encoding="utf-8") as file:
+        for name, version in text:
+            file.write(f"{name} {version}\n")

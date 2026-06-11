@@ -1,0 +1,22 @@
+Red Hat Enterprise Linux 6
+Red Hat Enterprise Linux 7
+Ubuntu 18.04
+Red Hat Enterprise Linux 8
+Ubuntu 20.04
+Debian GNU/Linux 11
+РЕД ОС 7.3
+Astra Linux Special Edition 1.7
+Astra Linux Special Edition 4.7
+Ubuntu 22.04
+Red Hat Enterprise Linux 9
+Ubuntu 24.04
+Fedora 42
+Red Hat Enterprise Linux 10
+Fedora EPEL 9
+Fedora EPEL 10
+Fedora 43
+Ubuntu 25.10
+РЕД ОС 8.0
+Red Hat Enterprise Linux AI 3
+Red Hat Hardened Images 
+Python 3.14.4
