@@ -1,3 +1,5 @@
 black.exe
 venv
 data\ready.xlsx
+data\~$ready.xlsx
+data\~$test_sheet.xlsx
