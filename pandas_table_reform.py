@@ -3,8 +3,6 @@ import re
 
 import pandas as pd
 
-
-
 clock = time.time()
 
 data_frame = pd.read_excel(
@@ -23,39 +21,22 @@ astra = data_frame[
 
 astra = astra[
     [
-        "Наименование уязвимости",
-        "Название ПО",
-        "Версия ПО",
-        "Наименование ОС и тип аппаратной платформы",
-        "Возможные меры по устранению",
-        "Уровень опасности уязвимости",
+        #"Наименование уязвимости",
+        #"Название ПО",
+        "Версия ПО"
+        #"Наименование ОС и тип аппаратной платформы",
+        #"Возможные меры по устранению",
+        #"Уровень опасности уязвимости",
     ]
 ]
+astra['Идентификатор'] = astra.index
+items = astra['Версия ПО'].str.split(r'\s*,\s*', regex=True)
+explode = astra[['Идентификатор']].join(items.rename('ITEM')).explode('ITEM').reset_index(drop=True)
+explode['ITEM'] = explode['ITEM'].str.split('(')
+explode['TMP'] = explode['ITEM'].astype(str).str.strip()
+#Дальше необходимо разделить на ВЕРСИЯ\ИМЯ, почистить их и объединить.
 
-py_test = astra['Версия ПО'].iloc[129]
-
-reform = []
-for line in py_test.split(', '):
-    version, name = line.split("(")
-    version = re.sub(r'[^0-9.]', '',version)
-    name = name.rstrip(')')
-    print(name, version)
-
-
-
-#astra.to_excel("./data/ready.xlsx", sheet_name="Уязвимости", index=True)
+print(explode.head(2))
 
 clock = time.time() - clock
 print(f"Работа с базой заняла {clock:.2f} секунд")
-
-
-def make_lists(df):
-    mask = df["Название ПО"].str.contains(", ")
-    mask_result = df[mask]
-    df_split = df.assign(names_split=df["Название ПО"].str.split(", "))
-    df = df["Название ПО"] = df_split["names_split"]
-
-def save_txt(text, name):
-    with open(name, "w", encoding="utf-8") as file:
-        for name, version in text:
-            file.write(f"{name} {version}\n")

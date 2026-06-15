@@ -1,0 +1,71 @@
+
+
+    # 3. trim and drop empty
+    expl['item'] = expl['item'].astype(str).str.strip()
+    expl = expl[expl['item'].ne('')].reset_index(drop=True)
+    # keep original empty entries? currently dropped
+
+    # 4. prepare regex patterns
+    # pattern A: version (Name)  e.g. "18.04 LTS (Ubuntu)" or "6 (Red Hat...)"
+    pat_ver_name = r'^\s*(?P<ver>[^()]+?)\s*\(\s*(?P<name>[^()]+?)\s*\)\s*$'
+    # pattern B: name (version) e.g. "epel9 (Fedora EPEL)" or in case order reversed
+    pat_name_ver = r'^\s*(?P<name>[^()]+?)\s*\(\s*(?P<ver>[^()]+?)\s*\)\s*$'
+
+    # 5. try pattern A
+    m = expl['item'].str.extract(pat_ver_name, expand=True)
+    m.columns = ['ver', 'name']
+
+    # 6. for missing, try pattern B
+    missing = m['ver'].isna() & m['name'].isna()
+    if missing.any():
+        m2 = expl.loc[missing, 'item'].str.extract(pat_name_ver, expand=True)
+        m.loc[missing, ['name', 'ver']] = m2.values
+
+    # 7. handle remaining items without parentheses
+    rest_mask = m['ver'].isna() & m['name'].isna()
+    if rest_mask.any():
+        rest = expl.loc[rest_mask, 'item']
+
+        # if there's parentheses inside, take content as name, rest as version
+        in_paren = rest.str.extract(r'\((?P<in_paren>[^()]+)\)', expand=True)['in_paren']
+        has_paren = in_paren.notna()
+
+        # assign when parentheses found
+        idx_has = rest_mask[rest_mask].index[has_paren]
+        if not in_paren[has_paren].empty:
+            m.loc[idx_has, 'name'] = in_paren[has_paren].str.strip().values
+            m.loc[idx_has, 'ver'] = rest[has_paren].str.replace(r'\(.*\)', '', regex=True).str.strip().replace('', pd.NA).values
+
+        # remaining without parentheses: classify by "версия-похоже" (начинается с 'до' или цифры) else name
+        rem_no_paren = rest[~has_paren]
+        if not rem_no_paren.empty:
+            is_ver_like = rem_no_paren.str.match(r'^\s*(до\s+)?\d', case=False, regex=True)
+            idxs = rem_no_paren.index
+            m.loc[idxs[is_ver_like], 'ver'] = rem_no_paren[is_ver_like].str.strip().values
+            m.loc[idxs[~is_ver_like], 'name'] = rem_no_paren[~is_ver_like].str.strip().values
+
+    # 8. special-case solitary '-' => version marker, name None
+    dash_mask = expl['item'].eq('-')
+    if dash_mask.any():
+        m.loc[dash_mask, 'name'] = pd.NA
+        m.loc[dash_mask, 'ver'] = '-'
+
+    # 9. attach name/version to exploded frame and normalize empty -> None
+    expl[['name', 'version']] = m[['name', 'ver']].copy()
+    expl['name'] = expl['name'].where(expl['name'].notna(), None)
+    expl['version'] = expl['version'].where(expl['version'].notna(), None)
+
+    if not keep_item:
+        expl = expl.drop(columns=['item'])
+
+    # 10. group back to pairs list and attach to original df
+    pairs = (expl.groupby(working_id)
+                  .apply(lambda d: list(zip(d['name'], d['version'])))
+                  .rename('parsed_pairs'))
+    df = df.join(pairs, on=working_id)
+
+    # if we created a temporary index col, drop it from returned df
+    if id_col is None:
+        df = df.drop(columns=[working_id])
+
+    return expl, df
