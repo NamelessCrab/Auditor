@@ -30,5 +30,5 @@ if __name__ == "__main__":
     df_pkg = get_package_list()
     df_lst = load_version_list()
     test = df_pkg[df_pkg['name'].str.contains('fox')]
-    df_lst["Название ПО"] = df_lst[df_lst['Название ПО'].str.lower()]
+    df_lst["Название ПО"] = df_lst['Название ПО'].str.lower()
     print(df_lst[df_lst['Название ПО'].str.contains('firefox-esr')])
