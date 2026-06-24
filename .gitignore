@@ -2,3 +2,4 @@ black.exe
 venv
 legacy_auditor
 tests
+data\ready.xlsx
