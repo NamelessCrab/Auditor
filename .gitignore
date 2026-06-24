@@ -1,3 +1,5 @@
 black.exe
 venv
-legacy_auditor
+data\vullist.xlsx
+data\test_sheet.xlsx
+tests
