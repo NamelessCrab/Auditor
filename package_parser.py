@@ -3,7 +3,7 @@ import re
 
 import pandas as pd
 
-from .data.match import lst_to_pkg
+from data.match import lst_to_pkg
 
 
 def get_package_list() -> pd.DataFrame:
