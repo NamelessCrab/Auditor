@@ -1,5 +1,5 @@
 black.exe
 venv
-data\ready.xlsx
-data\~$ready.xlsx
-data\~$test_sheet.xlsx
+data\vullist.xlsx
+data\test_sheet.xlsx
+tests
