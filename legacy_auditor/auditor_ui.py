@@ -12,7 +12,6 @@ from PyQt5.QtCore import Qt, QThread, pyqtSignal, QSize
 from PyQt5.QtGui import QFont, QPalette, QColor, QIcon, QPixmap
 from auditor_core import check_ports, check_permissions, check_cron, check_cve_services, make_report, save_report, level_name
 
-
 class AuditWorker(QThread):
     finished = pyqtSignal(list, list, list, list)
     progress = pyqtSignal(str)

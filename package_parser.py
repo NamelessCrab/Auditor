@@ -24,18 +24,7 @@ def get_package_list() -> pd.DataFrame:
             version = version.split(' ')[1]
             version = version.split(' ')[0]
             package_dict['version'].append(version)
-
-    df = pd.DataFrame(package_dict)
-    df['version'] = df[df['version'].str.normalize_version()]
-    return df
-
-def get_dpkg_list() -> pd.DataFrame:
-        dpkg_result = subprocess.run(
-        ['dpkg-query', '-W', "-f='${Package}\t${Version}\n'"],
-        stdout=subprocess.PIPE,
-        text=True
-    )
-        print(dpkg_result.stdout)
+    return pd.DataFrame(package_dict)
 
 def load_version_list() -> pd.DataFrame:
     df = pd.read_csv("./data/parsed_versions.csv")
@@ -54,9 +43,16 @@ def normalize_version(version: str) -> str:
         return f"{major}.{minor}"
     return major
 
+def compare_versions(version_pkg: str, version_lst: str, operator: str) -> bool:
+    result = subprocess.run(
+        ["dpkg", "--compare-version", version_pkg, operator, version_lst],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL
+    )
+    return result.returncode == 0
+
+
 if __name__ == "__main__":
     df_pkg = get_package_list()
-    #df_lst = load_version_list()
-    
-    print(df_pkg.head())
-    #print(df_lst[df_lst['Название ПО'].str.contains('fox')])
+    df_lst = load_version_list()
+    print(compare_versions("1.40", "eq", "1.40"))
