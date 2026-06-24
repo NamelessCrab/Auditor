@@ -31,12 +31,11 @@ astra = astra[
 ]
 astra['Идентификатор'] = astra.index
 items = astra['Версия ПО'].str.split(r'\s*,\s*', regex=True)
-explode = astra[['Идентификатор']].join(items.rename('ITEM')).explode('ITEM').reset_index(drop=True)
-explode['ITEM'] = explode['ITEM'].str.split('(')
-explode['TMP'] = explode['ITEM'].astype(str).str.strip()
+exp = astra[['Идентификатор']].join(items.rename('ITEM')).explode('ITEM').reset_index(drop=True)
+exp['item']
 #Дальше необходимо разделить на ВЕРСИЯ\ИМЯ, почистить их и объединить.
 
-print(explode.head(2))
+print(exp.head(2))
 
 clock = time.time() - clock
 print(f"Работа с базой заняла {clock:.2f} секунд")
