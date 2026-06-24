@@ -26,7 +26,7 @@ def get_dpkg_list() -> pd.DataFrame:
 
 def load_version_list() -> pd.DataFrame:
     df = pd.read_csv("./data/parsed_versions.csv")
-    #df["Название ПО"] = df["Название ПО"].str.lower()  
+    df["Название ПО"] = df["Название ПО"].str.lower()  
     return df 
 
 
@@ -34,5 +34,5 @@ if __name__ == "__main__":
     df_pkg = get_package_list()
     df_lst = load_version_list()
     test = df_pkg[df_pkg['name'].str.contains('fox')]
-    
-    print(df_lst[df_lst['Название ПО'].str.contains('firefox-esr')])
+    print(df_pkg[df_pkg['name'].str.contains('fox')])
+    print(df_lst[df_lst['Название ПО'].str.contains('fox')])
