@@ -47,13 +47,13 @@ def compare_versions(version_pkg: str, version_lst: str, operator: str) -> bool:
         
     result = subprocess.run(
         ["dpkg", "--compare-versions", version_pkg, operator, version_lst],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL
     )
-    return result.returncode
+    return result.returncode == 0
 
 
 if __name__ == "__main__":
     #df_pkg = get_package_list()
     #df_lst = load_version_list()
-    print(compare_versions("1.40", "1.40", "eq"))
+    print(compare_versions("140.4.0esr-1~deb13u1", "140.4", "eq"))
