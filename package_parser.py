@@ -50,12 +50,36 @@ def compare_versions(version_pkg: str, version_lst: str, operator: str) -> bool:
     )
     return result.returncode == 0
 
-def name1(pkg: pd.DataFrame):
-    pass
+def check_vuln(vuln: pd.Series, ver: "str"):
+    """
+    operator:
+    lt  <
+    le  <=
+    eq  ==
+    ge  >=
+    gt  >
+    """
+    type = vuln['Тип']
+    match type:
+        case "exact":
+            pass
+        case "max":
+            print("И сюда скачался...")
+        case "min":
+            pass
+        case "range":
+            pass
+        case "empty":
+            pass
+
+
+
+def base_check(pkg: pd.DataFrame, lst: pd.DataFrame):
     matched_names = []
     for _, pkg in pkg.iterrows():
         name = pkg['name']
-        
+        version = pkg['version']
+
         false_names = [] 
         for key, pattern in lst_to_pkg.items():
             for pattern_name in pattern:
@@ -63,6 +87,16 @@ def name1(pkg: pd.DataFrame):
                     matched_names.append(key)
                 else:
                     false_names.append(name)
+
+        if not matched_names:
+            continue
+        
+        matched_vuln = lst[lst['Название ПО'].isin(matched_names)]
+
+        for _, vuln in matched_vuln: #Название ПО \ Тип \ Оператор \ Версия \ Версия от \ Версия до
+            if check_vuln(vuln, version):
+                pass
+
     return matched_names
         
 
@@ -71,6 +105,6 @@ def name1(pkg: pd.DataFrame):
 if __name__ == "__main__":
     df_pkg = get_package_list() # name, version
     df_lst = load_version_list()
-    print(name1(df_pkg))
+    base_check(df_pkg, df_lst)
 
     
