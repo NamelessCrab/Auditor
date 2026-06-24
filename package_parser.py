@@ -93,7 +93,7 @@ def base_check(pkg: pd.DataFrame, lst: pd.DataFrame):
         
         matched_vuln = lst[lst['Название ПО'].isin(matched_names)]
 
-        for _, vuln in matched_vuln: #Название ПО \ Тип \ Оператор \ Версия \ Версия от \ Версия до
+        for _, vuln in matched_vuln.iterrows(): #Название ПО \ Тип \ Оператор \ Версия \ Версия от \ Версия до
             if check_vuln(vuln, version):
                 pass
 
