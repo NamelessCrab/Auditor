@@ -3,7 +3,7 @@ import re
 
 import pandas as pd
 
-software_to_pkg = {
+lst_to_pkg = {
     "firefox esr" : ["firefox-esr"]
 }
 
@@ -52,8 +52,22 @@ def compare_versions(version_pkg: str, version_lst: str, operator: str) -> bool:
     )
     return result.returncode == 0
 
+def name1(pkg: pd.DataFrame):
+    pass
+    for _, pkg in pkg.iterrows():
+        name = pkg['name']
+
+        for key, pattern in lst_to_pkg.items():
+            for pattern_name in pattern:
+                if pattern_name == name:
+                    pass
+        
+
+
 
 if __name__ == "__main__":
-    #df_pkg = get_package_list()
-    #df_lst = load_version_list()
-    print(compare_versions("140.4.0esr-1~deb13u1", "140.4.0", "eq"))
+    df_pkg = get_package_list() # name, version
+    df_lst = load_version_list()
+    print(df_lst.head())
+
+    
