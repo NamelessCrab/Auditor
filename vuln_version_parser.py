@@ -473,6 +473,7 @@ def parse_versions_cell(
     vulnerability_id: str | None = None,
     fallback_software: str | None = None,
     source_row: int | None = None,
+    level: str | None = None
 ) -> list[dict]:
     """
     Parses one cell from 'Версия ПО'.
@@ -484,6 +485,7 @@ def parse_versions_cell(
         parsed = parse_item(item, fallback_software=fallback_software)
         parsed["Идентификатор"] = vulnerability_id
         parsed["Исходная строка"] = source_row
+        parsed["Уровень опасности уязвимости"] = level
         records.append(parsed)
 
     return records
@@ -505,12 +507,14 @@ def parse_vulnerability_dataframe(
         vulnerability_id = row.get(id_col)
         fallback_software = row.get(software_col)
         versions = row.get(version_col)
+        danger_level = row.get('Уровень опасности уязвимости')
 
         records = parse_versions_cell(
             versions,
             vulnerability_id=vulnerability_id,
             fallback_software=fallback_software,
             source_row=index,
+            level=danger_level,
         )
         all_records.extend(records)
 
