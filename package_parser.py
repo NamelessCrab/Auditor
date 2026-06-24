@@ -56,4 +56,4 @@ def compare_versions(version_pkg: str, version_lst: str, operator: str) -> bool:
 if __name__ == "__main__":
     #df_pkg = get_package_list()
     #df_lst = load_version_list()
-    print(compare_versions("140.4.0esr-1~deb13u1", "140.4", "eq"))
+    print(compare_versions("140.4.0esr-1~deb13u1", "140.4.0", "eq"))
