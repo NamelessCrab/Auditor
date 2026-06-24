@@ -1,5 +1,7 @@
 import subprocess
 
+import pandas as pd
+
 apt_result = subprocess.run(
     ['apt', 'list', '--installed'],
     stdout=subprocess.PIPE,
@@ -17,9 +19,8 @@ for line in apt_result.stdout.splitlines()[1:]:
         version = version.split(' ')[0]
         package_dict['version'].append(version)
 
-
-
-print(package_dict)
+df = pd.DataFrame(package_dict)
+print(df.head(5))
     
         
 
