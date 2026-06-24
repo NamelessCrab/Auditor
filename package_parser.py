@@ -3,10 +3,8 @@ import re
 
 import pandas as pd
 
-lst_to_pkg = {
-    "firefox esr": ["firefox-esr"],
-    "firefox": ["firefox"],
-}
+from .data.match import lst_to_pkg
+
 
 def get_package_list() -> pd.DataFrame:
     apt_result = subprocess.run(
@@ -45,7 +43,6 @@ def normalize_version(version: str) -> str:
     return major
 
 def compare_versions(version_pkg: str, version_lst: str, operator: str) -> bool:
-        
     result = subprocess.run(
         ["dpkg", "--compare-versions", version_pkg, operator, version_lst],
         stdout=subprocess.DEVNULL,
@@ -65,7 +62,6 @@ def name1(pkg: pd.DataFrame):
                 if pattern_name == name:
                     matched_names.append(key)
                 else:
-                    print(name)
                     false_names.append(name)
     return matched_names
         
