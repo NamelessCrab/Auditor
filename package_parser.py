@@ -26,7 +26,7 @@ def get_dpkg_list() -> pd.DataFrame:
 
 def load_version_list() -> pd.DataFrame:
     df = pd.read_csv("./data/parsed_versions.csv")
-    df["Название ПО"] = df["Название ПО"].str.lower()  
+    #df["Название ПО"] = df["Название ПО"].str.lower()  
     return df 
 
 
