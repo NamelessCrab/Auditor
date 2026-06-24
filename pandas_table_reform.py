@@ -1,5 +1,7 @@
-import pandas as pd
 import time
+import re
+
+import pandas as pd
 
 clock = time.time()
 
@@ -19,20 +21,21 @@ astra = data_frame[
 
 astra = astra[
     [
-        "Наименование уязвимости",
-        "Название ПО",
-        "Версия ПО",
-        "Наименование ОС и тип аппаратной платформы",
-        "Возможные меры по устранению",
-        "Уровень опасности уязвимости",
+        #"Наименование уязвимости",
+        #"Название ПО",
+        "Версия ПО"
+        #"Наименование ОС и тип аппаратной платформы",
+        #"Возможные меры по устранению",
+        #"Уровень опасности уязвимости",
     ]
 ]
+astra['Идентификатор'] = astra.index
+items = astra['Версия ПО'].str.split(r'\s*,\s*', regex=True)
+exp = astra[['Идентификатор']].join(items.rename('ITEM')).explode('ITEM').reset_index(drop=True)
+exp['item']
+#Дальше необходимо разделить на ВЕРСИЯ\ИМЯ, почистить их и объединить.
 
-# mask = astra["Название ПО"].str.contains(", ")
-# mask_result = astra[mask]
-# astra_split = astra.assign(names_split=astra["Название ПО"].str.split(", "))
-# astra = astra["Название ПО"] = astra_split["names_split"]
-astra.to_excel("./data/ready.xlsx", sheet_name="Уязвимости", index=False)
+print(exp.head(2))
 
 clock = time.time() - clock
 print(f"Работа с базой заняла {clock:.2f} секунд")
