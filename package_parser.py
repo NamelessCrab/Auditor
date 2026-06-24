@@ -91,14 +91,17 @@ def base_check(pkg: pd.DataFrame, lst: pd.DataFrame):
 
         if not matched_names:
             continue
+    
     matched_names = set(matched_names)
     matched_vuln = lst[lst['Название ПО'].isin(matched_names)]
-
-    for _, vuln in matched_vuln.iterrows(): #Название ПО \ Тип \ Оператор \ Версия \ Версия от \ Версия до
-        if check_vuln(vuln):
-            pass
-
+    print(matched_names, '\n\n\n', matched_vuln)
+    
     return matched_names
+'''
+    for _, vuln in matched_vuln.iterrows(): #Название ПО \ Тип \ Оператор \ Версия \ Версия от \ Версия до
+        pass
+'''
+    
         
 
 
