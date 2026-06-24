@@ -20,7 +20,7 @@ for line in apt_result.stdout.splitlines()[1:]:
         package_dict['version'].append(version)
 
 df = pd.DataFrame(package_dict)
-print(df.head(5))
+print(df[df['name'].str.contains('fox')])
     
         
 
