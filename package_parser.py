@@ -44,6 +44,11 @@ def normalize_version(version: str) -> str:
     return major
 
 def compare_versions(version_pkg: str, version_lst: str, operator: str) -> bool:
+    print("operator repr:", repr(operator))
+    print("operator len:", len(operator))
+    print("version_pkg repr:", repr(version_pkg))
+    print("version_lst repr:", repr(version_lst))
+    
     result = subprocess.run(
         ["dpkg", "--compare-versions", version_pkg, operator, version_lst],
         stdout=subprocess.PIPE,
