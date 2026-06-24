@@ -64,6 +64,7 @@ def check_vuln(vuln: pd.Series, ver: "str"):
         case "exact":
             pass
         case "max":
+            pass
             print("И сюда скачался...")
         case "min":
             pass
@@ -90,12 +91,12 @@ def base_check(pkg: pd.DataFrame, lst: pd.DataFrame):
 
         if not matched_names:
             continue
-        
-        matched_vuln = lst[lst['Название ПО'].isin(matched_names)]
+    matched_names = set(matched_names)
+    matched_vuln = lst[lst['Название ПО'].isin(matched_names)]
 
-        for _, vuln in matched_vuln.iterrows(): #Название ПО \ Тип \ Оператор \ Версия \ Версия от \ Версия до
-            if check_vuln(vuln, version):
-                pass
+    for _, vuln in matched_vuln.iterrows(): #Название ПО \ Тип \ Оператор \ Версия \ Версия от \ Версия до
+        if check_vuln(vuln):
+            pass
 
     return matched_names
         
