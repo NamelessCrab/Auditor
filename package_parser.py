@@ -23,7 +23,7 @@ def get_package_list() -> pd.DataFrame:
 
     
 def load_version_list() -> pd.DataFrame:
-    return pd.read_csv("data\parsed_versions.csv")   
+    return pd.read_csv("./data/parsed_versions.csv")   
 
 
 if __name__ == "__main__":
