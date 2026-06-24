@@ -75,7 +75,7 @@ def check_vuln(vuln: pd.Series, ver: "str"):
 
 
 
-def base_check(pkg: pd.DataFrame, lst: pd.DataFrame):
+def base_check(pkg: pd.DataFrame, p_lst: pd.DataFrame):
     matched_names = []
     for _, pkg in pkg.iterrows():
         name = pkg['name']
@@ -93,7 +93,7 @@ def base_check(pkg: pd.DataFrame, lst: pd.DataFrame):
             continue
     
     matched_names = set(matched_names)
-    matched_vuln = lst[lst['Название ПО'].isin(matched_names)]
+    matched_vuln = p_lst[p_lst['Название ПО'].isin(matched_names)]
     print(matched_names)
     print('\n\n\n')
     print(matched_vuln)
