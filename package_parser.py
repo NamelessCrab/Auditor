@@ -4,7 +4,8 @@ import re
 import pandas as pd
 
 lst_to_pkg = {
-    "firefox esr" : ["firefox-esr"]
+    "firefox esr": ["firefox-esr"],
+    "firefox": ["firefox"],
 }
 
 def get_package_list() -> pd.DataFrame:
@@ -54,13 +55,19 @@ def compare_versions(version_pkg: str, version_lst: str, operator: str) -> bool:
 
 def name1(pkg: pd.DataFrame):
     pass
+    matched_names = []
     for _, pkg in pkg.iterrows():
         name = pkg['name']
-
+        
+        false_names = [] 
         for key, pattern in lst_to_pkg.items():
             for pattern_name in pattern:
                 if pattern_name == name:
-                    pass
+                    matched_names.append(key)
+                else:
+                    print(name)
+                    false_names.append(name)
+    return matched_names
         
 
 
@@ -68,6 +75,6 @@ def name1(pkg: pd.DataFrame):
 if __name__ == "__main__":
     df_pkg = get_package_list() # name, version
     df_lst = load_version_list()
-    print(df_lst.head())
+    print(name1(df_pkg))
 
     
