@@ -94,8 +94,9 @@ def base_check(pkg: pd.DataFrame, lst: pd.DataFrame):
     
     matched_names = set(matched_names)
     matched_vuln = lst[lst['Название ПО'].isin(matched_names)]
-    print(matched_names, '\n\n\n', matched_vuln)
-    
+    print(matched_names)
+    print('\n\n\n')
+    print(matched_vuln)
     return matched_names
 '''
     for _, vuln in matched_vuln.iterrows(): #Название ПО \ Тип \ Оператор \ Версия \ Версия от \ Версия до
